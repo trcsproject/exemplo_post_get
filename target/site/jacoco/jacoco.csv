@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+rest-Json,br.com.models,Contact,17,0,0,0,7,0,5,0,5,0
+rest-Json,br.com.json,jsonPost,50,0,0,0,13,0,2,0,2,0
+rest-Json,br.com.json.reader,RestJson,44,0,0,0,12,0,3,0,3,0
+rest-Json,br.com.json.reader,jsonReadesInterface,115,0,12,0,23,0,8,0,2,0
+rest-Json,br.com.json.reader,JsonReaderGeneric,179,0,12,0,36,0,14,0,8,0
+rest-Json,br.com.json.reader,JsonReader,197,0,14,0,40,0,16,0,9,0
+rest-Json,br.com.rest.json,POST2,80,0,4,0,22,0,4,0,2,0
+rest-Json,br.com.rest.json,GET,73,0,4,0,20,0,4,0,2,0
+rest-Json,br.com.rest.json,POST,98,0,6,0,21,0,5,0,2,0

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>JsonReader.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rest-Json</a> &gt; <a href="index.source.html" class="el_package">br.com.json.reader</a> &gt; <span class="el_source">JsonReader.java</span></div><h1>JsonReader.java</h1><pre class="source lang-java linenums">package br.com.json.reader;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.Map;
+import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+<span class="nc" id="L17">public class JsonReader {</span>
+
+    public URL url;
+
+<span class="nc" id="L21">    private static Logger log = Logger.getLogger(JsonReader.class);</span>
+
+    public String getUrl() {
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        return this.url == null ? null : this.url.toString();</span>
+    }
+
+    void setUrlJson(String host, int port, String path) {
+        try {
+<span class="nc" id="L29">            this.url = new URL(&quot;http&quot;, host, port, path);</span>
+<span class="nc" id="L30">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L31">            e.printStackTrace();</span>
+<span class="nc" id="L32">        }</span>
+<span class="nc" id="L33">    }</span>
+
+    public JSONObject getJsonObjectFromServer(Map&lt;String, String&gt; parameters, String specificService) throws IOException, JSONException {
+<span class="nc" id="L36">        String s = buildJsonGetRequest(parameters, specificService);</span>
+<span class="nc" id="L37">        return readJsonFromUrl(s);</span>
+    }
+
+    public String buildJsonGetRequest(Map&lt;String, String&gt; parameters, String specificService) {
+<span class="nc" id="L41">        StringBuilder strbuilder = new StringBuilder();</span>
+
+        try {
+<span class="nc" id="L44">            strbuilder.append(url.toURI()).append(specificService).append(&quot;?&quot;);</span>
+
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            for (String key : parameters.keySet()) {</span>
+<span class="nc" id="L47">                strbuilder.append(key).append(&quot;=&quot;).append(parameters.get(key)).append(&quot;&amp;&quot;);</span>
+<span class="nc" id="L48">            }</span>
+<span class="nc" id="L49">            return strbuilder.toString().substring(0, strbuilder.toString().lastIndexOf(&quot;&amp;&quot;)).replaceAll(&quot;\\s&quot;, &quot;%20&quot;);</span>
+<span class="nc" id="L50">        } catch (URISyntaxException e) {</span>
+<span class="nc" id="L51">            e.printStackTrace();</span>
+<span class="nc" id="L52">            return &quot;invalid url parsing&quot;;</span>
+        }
+    }
+
+    private static String readAll(Reader rd) throws IOException {
+<span class="nc" id="L57">        StringBuilder sb = new StringBuilder();</span>
+        int cp;
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        while ((cp = rd.read()) != -1) {</span>
+<span class="nc" id="L60">            sb.append((char) cp);</span>
+        }
+<span class="nc" id="L62">        return sb.toString();</span>
+    }
+
+    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+
+<span class="nc" id="L67">        InputStream is = null;</span>
+
+        try {
+<span class="nc" id="L70">            is = new URL(url).openStream();</span>
+
+<span class="nc" id="L72">            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName(&quot;UTF-8&quot;)));</span>
+<span class="nc" id="L73">            String jsonText = readAll(rd);</span>
+<span class="nc" id="L74">            JSONObject json = new JSONObject(jsonText);</span>
+<span class="nc" id="L75">            return json;</span>
+
+<span class="nc" id="L77">        } catch (IOException e) {</span>
+<span class="nc" id="L78">            JSONObject json = new JSONObject();</span>
+<span class="nc" id="L79">            json.put(&quot;IOException &quot;, &quot;Deu problema readJsonFromUrl&quot;);</span>
+<span class="nc" id="L80">            return json;</span>
+        } finally {
+<span class="nc bnc" id="L82" title="All 6 branches missed.">            if (is != null) {</span>
+<span class="nc" id="L83">                is.close();</span>
+            }
+        }
+    }
+
+    public JSONObject buildJsonObject(Map&lt;String, String&gt; parameters) throws IOException, JSONException {
+<span class="nc" id="L89">        JSONObject json = new JSONObject();</span>
+
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        for (String key : parameters.keySet()) {</span>
+<span class="nc" id="L92">            json.put(key, parameters.get(key));</span>
+<span class="nc" id="L93">        }</span>
+<span class="nc" id="L94">        return json;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
